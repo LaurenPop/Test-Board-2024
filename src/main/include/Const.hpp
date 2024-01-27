@@ -412,9 +412,9 @@ const double K_BH_ElevatorPowerDwn = -0.9;
 const double K_BH_LauncherMinCmndSpd = 10;
 
 /* K_BH_LauncherPID_Gx: PID gains for the launcher. */
-const double K_BH_LauncherPID_Gx[E_PID_SparkMaxCalSz] = { 0.00055,  // kP
+const double K_BH_LauncherPID_Gx[E_PID_SparkMaxCalSz] = { 0.000200,  // kP
                                                           0.000001, // kI
-                                                          0.0,      // kD
+                                                          0.001000,      // kD
                                                           0.0,      // kIz
                                                           0.0,      // kFF
                                                           1.0,      // kMaxOutput

@@ -11,6 +11,7 @@
 #include "Robot.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
+#include "Lookup.hpp"
 //#include "Encoders.hpp"
 //#include "Gyro.hpp"
 //#include "IO_Sensors.hpp"
@@ -87,6 +88,12 @@ void Robot::RobotInit()
   frc::SmartDashboard::PutNumber("M2 Speed", 0);
   frc::SmartDashboard::PutNumber("M1 Speed Measured", 0);
   frc::SmartDashboard::PutNumber("M2 Speed Measured", 0);
+
+  frc::SmartDashboard::PutNumber("Ramp Rate", 6);
+
+  frc::SmartDashboard::PutNumber("M1 Desired", 0);
+  frc::SmartDashboard::PutNumber("M2 Desired", 0);
+
 }
 
 /******************************************************************************
@@ -140,6 +147,9 @@ void Robot::TeleopInit()
  ******************************************************************************/
 void Robot::TeleopPeriodic()
 {
+  double L_DesiredSpeed1 = 0;
+  double L_DesiredSpeed2 = 0;
+  
   double L_p = frc::SmartDashboard::GetNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
   double L_i = frc::SmartDashboard::GetNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
   double L_d = frc::SmartDashboard::GetNumber("D Gain", K_BH_LauncherPID_Gx[E_kD]);
@@ -147,9 +157,14 @@ void Robot::TeleopPeriodic()
   double L_ff = frc::SmartDashboard::GetNumber("Feed Forward", K_BH_LauncherPID_Gx[E_kFF]);
   double L_max = frc::SmartDashboard::GetNumber("Max Output", K_BH_LauncherPID_Gx[E_kMaxOutput]);
   double L_min = frc::SmartDashboard::GetNumber("Min Output", K_BH_LauncherPID_Gx[E_kMinOutput]);
+  
+  double L_Ramp = frc::SmartDashboard::GetNumber("Ramp Rate", 0);
 
-  V_M1_Speed = frc::SmartDashboard::GetNumber("M1 Speed", 0);
-  V_M2_Speed = frc::SmartDashboard::GetNumber("M2 Speed", 0);
+  L_DesiredSpeed1 = frc::SmartDashboard::GetNumber("M1 Speed", 0);
+  L_DesiredSpeed2 = frc::SmartDashboard::GetNumber("M2 Speed", 0);
+
+  V_M1_Speed = RampTo(L_DesiredSpeed1, V_M1_Speed, L_Ramp);
+  V_M2_Speed = RampTo(L_DesiredSpeed2, V_M2_Speed, L_Ramp);
 
   if((L_p != V_LauncherPID_Gx[E_kP]))   { m_Motor1_PID.SetP(L_p); m_Motor2_PID.SetP(L_p); V_LauncherPID_Gx[E_kP] = L_p; }
   if((L_i != V_LauncherPID_Gx[E_kI]))   { m_Motor1_PID.SetI(L_i); m_Motor2_PID.SetI(L_i); V_LauncherPID_Gx[E_kI] = L_i; }
@@ -163,6 +178,9 @@ void Robot::TeleopPeriodic()
 
   frc::SmartDashboard::PutNumber("M1 Speed Measured", m_Motor1Encoder.GetVelocity());
   frc::SmartDashboard::PutNumber("M2 Speed Measured", m_Motor2Encoder.GetVelocity()); 
+
+  frc::SmartDashboard::PutNumber("M1 Desired", V_M1_Speed);
+  frc::SmartDashboard::PutNumber("M2 Desired", V_M2_Speed);
 }
 
 /******************************************************************************
