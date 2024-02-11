@@ -230,6 +230,7 @@ void Robot::TestPeriodic()
 
   frc::SmartDashboard::PutNumber("M1 Speed", m_Motor1Encoder.GetVelocity());
   frc::SmartDashboard::PutNumber("M2 Speed", m_Motor2Encoder.GetVelocity()); 
+  // frc::SmartDashboard::PutNumber("Kraken Speed". m_)
 }
 
 #ifndef RUNNING_FRC_TESTS
