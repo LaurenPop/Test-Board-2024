@@ -5,14 +5,22 @@
 
 #include <string>
 
-#include <frc/AnalogInput.h>
+#include <ctre/Phoenix.h>
+#include <ctre/phoenix/motorcontrol/can/TalonFX.h>
+#include <ctre/phoenix6/TalonFX.hpp>
+#include <ctre/phoenix6/signals/SpnEnums.hpp>
+#include <ctre/phoenix6/CANcoder.hpp>
+#include <ctre/phoenix6/Serializable.hpp>
+#include <ctre/phoenix6/controls/DutyCycleOut.hpp>
+#include <ctre/phoenix6/controls/PositionDutyCycle.hpp>
+#include <ctre/phoenix6/controls/VelocityVoltage.hpp>
+
 #include <frc/DigitalInput.h>
 #include <frc/DigitalOutput.h>
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/TimedRobot.h>
 #include <frc/PowerDistribution.h>
-// #include "ctre/Phoenix.h"
 #include "rev/CANSparkMax.h"
 #include <frc/motorcontrol/Spark.h>
 #include <frc/DutyCycleEncoder.h>
@@ -39,15 +47,30 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
   void RobotMotorCommands();
 
-  // Analog Inputs Test
-  // Practice Bot Wheel Angle Encoders
-  #ifdef PracticeBot
-  frc::AnalogInput a_encoderFrontLeftSteer{2};
-  frc::AnalogInput a_encoderFrontRightSteer{1};
-  frc::AnalogInput a_encoderRearLeftSteer{3};
-  frc::AnalogInput a_encoderRearRightSteer{0};
-  #endif
- 
+ctre::phoenix6::hardware::TalonFX::TalonFX	(int 3,
+std::string 	canbus = CANasaurus );
+
+static constexpr int 	Unknown = 0;
+static constexpr int 	KrakenX60 = 2;
+
+ctre::phoenix6::signals::MotorTypeValue::MotorTypeValue	(	int 	value	);
+ctre::phoenix6::signals::MotorTypeValue::MotorTypeValue	(		);
+bool ctre::phoenix6::signals::MotorTypeValue::operator<	(	const KrakenX60 & 	data	)	const;
+bool ctre::phoenix6::signals::MotorTypeValue::operator<	(	int 	data	)	const;
+bool ctre::phoenix6::signals::MotorTypeValue::operator==	(	const MotorTypeValue & 	data	)	const;
+bool ctre::phoenix6::signals::MotorTypeValue::operator==	(	int 	data	)	const;
+std::string ctre::phoenix6::signals::MotorTypeValue::Serialize	(		)	const;
+std::string ctre::phoenix6::signals::MotorTypeValue::ToString	(		)	const;
+std::ostream & operator<<	(	std::ostream & 	os,
+const MotorTypeValue & 	data )	;
+
+constexpr int ctre::phoenix6::signals::MotorTypeValue::KrakenX60 = 2;
+constexpr int ctre::phoenix6::signals::MotorTypeValue::Unknown = 0;
+int ctre::phoenix6::signals::MotorTypeValue::value;
+
+// Example usage of a TalonFX motor controller
+
+// TalonFX motor{3}; // creates a new TalonFX with ID 3
   
   //DIO - Inputs / Outputs
   #ifdef CompBot
@@ -66,16 +89,6 @@ class Robot : public frc::TimedRobot {
   // CAN Motor Controllers
   rev::CANSparkMax                           m_Motor1 {1,  rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Motor2 {2,  rev::CANSparkMax::MotorType::kBrushless};
-  // rev::CANSparkMax                           m_frontRightSteerMotor{frontRightSteerDeviceID, rev::CANSparkMax::MotorType::kBrushless};
-  // rev::CANSparkMax                           m_frontRightDriveMotor{frontRightDriveDeviceID, rev::CANSparkMax::MotorType::kBrushless};
-  // rev::CANSparkMax                           m_rearLeftSteerMotor  {rearLeftSteerDeviceID,   rev::CANSparkMax::MotorType::kBrushless};
-  // rev::CANSparkMax                           m_rearLeftDriveMotor  {rearLeftDriveDeviceID,   rev::CANSparkMax::MotorType::kBrushless};
-  // rev::CANSparkMax                           m_rearRightSteerMotor {rearRightSteerDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
-  // rev::CANSparkMax                           m_rearRightDriveMotor {rearRightDriveDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
-  //frc::Spark spark1{0};
-  //frc::Spark spark2{1};
-  //frc::Spark spark3{2};
-  //frc::Spark spark4{3};
 
   rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
   rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();
@@ -96,5 +109,6 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
+  
 };
 #endif
