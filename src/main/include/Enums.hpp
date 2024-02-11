@@ -53,6 +53,21 @@ typedef enum T_PID_SparkMaxCal
   E_PID_SparkMaxCalSz
 } T_PID_SparkMaxCal;
 
+// typedef enum T_PID_KrakenCal
+// {
+//   E_kP,
+//   E_kI,
+//   E_kD,
+//   E_kIz,
+//   E_kFF,
+//   E_kMaxOutput,
+//   E_kMinOutput,
+//   E_kMaxVel,
+//   E_kMinVel,
+//   E_kMaxAcc,
+//   E_kAllErr,
+//   E_PID_KrakenCalSz
+// } T_PID_KrakenCal;
 
 typedef enum T_LauncherStates
 {

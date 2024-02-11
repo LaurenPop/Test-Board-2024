@@ -14,8 +14,11 @@
 #include <ctre/phoenix6/controls/DutyCycleOut.hpp>
 #include <ctre/phoenix6/controls/PositionDutyCycle.hpp>
 #include <ctre/phoenix6/controls/VelocityVoltage.hpp>
+#include <ctre/phoenix6/core/CoreCANcoder.hpp>
+#include <ctre/phoenix6/core/CoreTalonFX.hpp>
 
 #include <frc/DigitalInput.h>
+#include <frc/drive/DifferentialDrive.h>
 #include <frc/DigitalOutput.h>
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SendableChooser.h>
@@ -36,6 +39,9 @@
 
 #include "Const.hpp"
 
+using namespace ctre::phoenix::motorcontrol;
+using namespace ctre::phoenix::sensors;
+
 class Robot : public frc::TimedRobot {
  public:
   void RobotInit() override;
@@ -46,32 +52,7 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
   void RobotMotorCommands();
-
-ctre::phoenix6::hardware::TalonFX::TalonFX	(int 3,
-std::string 	canbus = CANasaurus );
-
-static constexpr int 	Unknown = 0;
-static constexpr int 	KrakenX60 = 2;
-
-ctre::phoenix6::signals::MotorTypeValue::MotorTypeValue	(	int 	value	);
-ctre::phoenix6::signals::MotorTypeValue::MotorTypeValue	(		);
-bool ctre::phoenix6::signals::MotorTypeValue::operator<	(	const KrakenX60 & 	data	)	const;
-bool ctre::phoenix6::signals::MotorTypeValue::operator<	(	int 	data	)	const;
-bool ctre::phoenix6::signals::MotorTypeValue::operator==	(	const MotorTypeValue & 	data	)	const;
-bool ctre::phoenix6::signals::MotorTypeValue::operator==	(	int 	data	)	const;
-std::string ctre::phoenix6::signals::MotorTypeValue::Serialize	(		)	const;
-std::string ctre::phoenix6::signals::MotorTypeValue::ToString	(		)	const;
-std::ostream & operator<<	(	std::ostream & 	os,
-const MotorTypeValue & 	data )	;
-
-constexpr int ctre::phoenix6::signals::MotorTypeValue::KrakenX60 = 2;
-constexpr int ctre::phoenix6::signals::MotorTypeValue::Unknown = 0;
-int ctre::phoenix6::signals::MotorTypeValue::value;
-
-// Example usage of a TalonFX motor controller
-
-// TalonFX motor{3}; // creates a new TalonFX with ID 3
-  
+  static constexpr char const *kCANBus{"canivore"};
   //DIO - Inputs / Outputs
   #ifdef CompBot
   // WPI_CANCoder          m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
@@ -89,16 +70,17 @@ int ctre::phoenix6::signals::MotorTypeValue::value;
   // CAN Motor Controllers
   rev::CANSparkMax                           m_Motor1 {1,  rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Motor2 {2,  rev::CANSparkMax::MotorType::kBrushless};
+  ctre::phoenix6::hardware::TalonFX m_krakentest{0, kCANBus};
 
   rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
   rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();
-
-  // // CAN Encoders
+  // ctre::phoenix6::hardware::TalonFX          m_krakentestPID   =m_krakentest.Get();
+  
+ // CAN Encoders
   rev::SparkRelativeEncoder               m_Motor1Encoder  = m_Motor1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_Motor2Encoder  = m_Motor2.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
 
-
-  // Driver Inputs
+  // Driver Input
   frc::Joystick c_joyStick{0};
 #ifdef CompBot
   frc::Joystick c_joyStick2{1};
@@ -109,6 +91,6 @@ int ctre::phoenix6::signals::MotorTypeValue::value;
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
-  
+
 };
 #endif

@@ -424,6 +424,18 @@ const double K_BH_LauncherPID_Gx[E_PID_SparkMaxCalSz] = { 0.000200,  // kP
                                                          55.0,      // kMaxAcc
                                                           0.0};     // kAllErr
 
+// const double K_C_KrakenPID_Gx[E_PID_KrakenCalSz] = {    0.0,  // kP
+//                                                         0.0,  // kI
+//                                                         0.0,  // kD
+//                                                         0.0,  // kIz
+//                                                         0.0,  // kFF
+//                                                         0.0,  // kMaxOutput
+//                                                         0.0,  // kMinOutput
+//                                                         0.0,  // kMaxVel
+//                                                         0.0,  // kMinVel
+//                                                         0.0,  // kMaxAcc
+//                                                         0.0};  // kAllErr
+
 /* K_BH_LauncherSpeedAxis: Launcher speed axis for K_BH_LauncherSpeed.  Distance is in the unit from the camera.  Comments reflect actual measured distance. */
 const double K_BH_LauncherSpeedAxis[4] = {2.52,  // 6 ft 6in
                                           3.60,  // 8 ft 6in

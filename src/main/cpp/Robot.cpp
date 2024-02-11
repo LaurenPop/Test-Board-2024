@@ -7,7 +7,7 @@
  * - Climber active (beta 02/26/2022)
  *
  * */
-
+using namespace ctre::phoenix6;
 #include "Robot.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
@@ -40,6 +40,7 @@ double CHRIS_Second = 0;
 float SparkSpeedPID = 0;*/
 double V_M1_Speed = 0;
 double V_M2_Speed = 0;
+double V_KrakenTest_Speed = 0;
 double V_LauncherPID_Gx[E_PID_SparkMaxCalSz];
 // bool FakeButton;
 
@@ -61,6 +62,14 @@ void Robot::RobotMotorCommands()
 void Robot::RobotInit()
 {
   //VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
+
+  //  start with factory-default configs
+//    ctre::phoenix6::configs::MotorOutputConfigs currentConfigs{};
+
+//   currentConfigs.Inverted = ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
+
+//  m_krakentest.GetConfigurator().Apply(currentConfigs);
+
 
   m_Motor1_PID.SetP(K_BH_LauncherPID_Gx[E_kP]);
   m_Motor1_PID.SetI(K_BH_LauncherPID_Gx[E_kI]);
@@ -93,6 +102,8 @@ void Robot::RobotInit()
 
   frc::SmartDashboard::PutNumber("M1 Desired", 0);
   frc::SmartDashboard::PutNumber("M2 Desired", 0);
+
+  frc::SmartDashboard::PutNumber("Kraken Desired", 0);
 
 }
 
@@ -147,8 +158,10 @@ void Robot::TeleopInit()
  ******************************************************************************/
 void Robot::TeleopPeriodic()
 {
+
   double L_DesiredSpeed1 = 0;
   double L_DesiredSpeed2 = 0;
+  double L_Krakenspeed1 = 0;
   
   double L_p = frc::SmartDashboard::GetNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
   double L_i = frc::SmartDashboard::GetNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
@@ -163,8 +176,10 @@ void Robot::TeleopPeriodic()
   L_DesiredSpeed1 = frc::SmartDashboard::GetNumber("M1 Speed", 0);
   L_DesiredSpeed2 = frc::SmartDashboard::GetNumber("M2 Speed", 0);
 
+// Shuffleboard speed inputs along with ramp to time.
   V_M1_Speed = RampTo(L_DesiredSpeed1, V_M1_Speed, L_Ramp);
   V_M2_Speed = RampTo(L_DesiredSpeed2, V_M2_Speed, L_Ramp);
+  V_KrakenTest_Speed = RampTo(L_Krakenspeed1, V_KrakenTest_Speed, L_Ramp);
 
   if((L_p != V_LauncherPID_Gx[E_kP]))   { m_Motor1_PID.SetP(L_p); m_Motor2_PID.SetP(L_p); V_LauncherPID_Gx[E_kP] = L_p; }
   if((L_i != V_LauncherPID_Gx[E_kI]))   { m_Motor1_PID.SetI(L_i); m_Motor2_PID.SetI(L_i); V_LauncherPID_Gx[E_kI] = L_i; }
@@ -181,6 +196,7 @@ void Robot::TeleopPeriodic()
 
   frc::SmartDashboard::PutNumber("M1 Desired", V_M1_Speed);
   frc::SmartDashboard::PutNumber("M2 Desired", V_M2_Speed);
+  frc::SmartDashboard::PutNumber("Kraken Desired", V_KrakenTest_Speed);
 }
 
 /******************************************************************************
