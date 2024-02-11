@@ -8,6 +8,7 @@
  *
  * */
 using namespace ctre::phoenix6;
+
 #include "Robot.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
@@ -44,6 +45,8 @@ double V_KrakenTest_Speed = 0;
 double V_LauncherPID_Gx[E_PID_SparkMaxCalSz];
 // bool FakeButton;
 
+constexpr units::time::second_t print_period{500_ms};
+
 /******************************************************************************
  * Function:     RobotMotorCommands
  *
@@ -70,6 +73,16 @@ void Robot::RobotInit()
 
 //  m_krakentest.GetConfigurator().Apply(currentConfigs);
 
+  /* Configure CANcoder */
+  ctre::phoenix6::configs::CANcoderConfiguration toApply{};
+
+  /* User can change the configs if they want, or leave it empty for factory-default */
+
+  cancoder.GetConfigurator().Apply(toApply);
+
+  /* Speed up signals to an appropriate rate */
+  cancoder.GetPosition().SetUpdateFrequency(100_Hz);
+  cancoder.GetVelocity().SetUpdateFrequency(100_Hz);
 
   m_Motor1_PID.SetP(K_BH_LauncherPID_Gx[E_kP]);
   m_Motor1_PID.SetI(K_BH_LauncherPID_Gx[E_kI]);
