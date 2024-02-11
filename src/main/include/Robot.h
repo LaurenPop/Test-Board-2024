@@ -41,6 +41,7 @@
 
 using namespace ctre::phoenix::motorcontrol;
 using namespace ctre::phoenix::sensors;
+using namespace ctre::phoenix6;
 
 class Robot : public frc::TimedRobot {
  public:

@@ -7,8 +7,6 @@
  * - Climber active (beta 02/26/2022)
  *
  * */
-using namespace ctre::phoenix6;
-
 #include "Robot.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
