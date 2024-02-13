@@ -71,7 +71,7 @@ class Robot : public frc::TimedRobot {
   // CAN Motor Controllers
   rev::CANSparkMax                           m_Motor1 {1,  rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Motor2 {2,  rev::CANSparkMax::MotorType::kBrushless};
-  ctre::phoenix6::hardware::TalonFX m_krakentest{0, kCANBus};
+  ctre::phoenix6::hardware::TalonFX          m_krakentest{0, kCANBus};
 
   rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
   rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();
