@@ -39,8 +39,6 @@
 
 #include "Const.hpp"
 
-using namespace ctre::phoenix::motorcontrol;
-using namespace ctre::phoenix::sensors;
 using namespace ctre::phoenix6;
 
 class Robot : public frc::TimedRobot {
@@ -53,7 +51,7 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
   void RobotMotorCommands();
-  static constexpr char const *kCANBus{"canivore"};
+  static constexpr char const *kCANBus{"rio"};
   //DIO - Inputs / Outputs
   #ifdef CompBot
   // WPI_CANCoder          m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
@@ -80,6 +78,17 @@ class Robot : public frc::TimedRobot {
  // CAN Encoders
   rev::SparkRelativeEncoder               m_Motor1Encoder  = m_Motor1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_Motor2Encoder  = m_Motor2.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+
+
+// now types are organized cleanly by namespace
+hardware::TalonFX m_talonFX{0};
+sim::TalonFXSimState& m_talonFXSim{m_talonFX.GetSimState()};
+
+controls::DutyCycleOut m_talonFXOut{0};
+
+configs::TalonFXConfiguration m_talonFXConfig{};
+ctre::phoenix6::signals::InvertedValue m_talonFXInverted{ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive};
+
 
   // Driver Input
   frc::Joystick c_joyStick{0};
