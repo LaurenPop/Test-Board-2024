@@ -173,7 +173,7 @@ void Robot::TeleopPeriodic()
   V_M2_Speed = RampTo(L_DesiredSpeed2, V_M2_Speed, L_Ramp);
   V_KrakenTest_Speed = RampTo(L_Krakenspeed1, V_KrakenTest_Speed, L_Ramp);
   m_krakentest.SetControl(controls::DutyCycleOut{0.2});
-  controls::DutyCycleOut m_krakenRequest(0.2, L_Ramp);
+  controls::DutyCycleOut m_krakenRequest(0.2);
 
 m_krakenRequest.Output = 0.2;
 m_krakentest.SetControl(m_krakenRequest);
