@@ -16,7 +16,9 @@
 #include <ctre/phoenix6/controls/VelocityVoltage.hpp>
 #include <ctre/phoenix6/core/CoreCANcoder.hpp>
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>
+#include <ctre/phoenix6/controls/MotionMagicVelocityVoltage.hpp>
 
+#include <frc/trajectory/TrapezoidProfile.h>
 #include <frc/DigitalInput.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/DigitalOutput.h>
