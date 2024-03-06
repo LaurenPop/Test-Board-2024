@@ -21,7 +21,7 @@ double VaENC_InS_WheelVelocity[E_RobotCornerSz]; // Velocity of drive wheels, in
 double VaENC_In_WheelDeltaDistance[E_RobotCornerSz]; // Distance wheel moved, loop to loop, in inches
 double VaENC_Cnt_WheelDeltaDistanceCurr[E_RobotCornerSz]; // Current distance wheel moved, loop to loop, in Counts
 double VaENC_Cnt_WheelDeltaDistancePrev[E_RobotCornerSz]; // Prev distance wheel moved, loop to loop, in Counts
-
+#ifdef Encoders
 /******************************************************************************
  * Function:     EncodersInitCommon
  *
@@ -280,3 +280,4 @@ void Encoders_MAN_INT( rev::SparkMaxRelativeEncoder m_IntakeRollersEncoder,
   frc::SmartDashboard::PutNumber("LinearSlideRaw", LeENC_Deg_LinearSlide);
   frc::SmartDashboard::PutNumber("IntakeExtended", VsMAN_s_Sensors.b_IntakeArmExtended);
   }
+#endif

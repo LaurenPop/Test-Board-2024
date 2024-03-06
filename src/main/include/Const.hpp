@@ -10,7 +10,11 @@
 
 #define NewVision // NewVision or OldVision
 
+// Kraken Motor testing
+// #define KrakenMotor
 
+// Driver inputs file
+// #define Driver_inputs
 
 
 // RoboRio controller execution time

@@ -62,7 +62,7 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
-
+#ifdef KrakenMotor
 configs::Slot0Configs slot0Configs{};
 slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
 slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
@@ -92,44 +92,44 @@ m_setpoint = m_profile.Calculate(20_ms, m_setpoint, m_goal);
 
 // send the request to the device
 // note: "position" is velocity, and "velocity" is acceleration
-m_positionControl.Velocity = m_setpoint.position;
-m_positionControl.Acceleration = m_setpoint.velocity;
+// m_positionControl.Velocity = m_setpoint.position;
+// m_positionControl.Acceleration = m_setpoint.velocity;
 m_talonFX.SetControl(m_request);
+#endif
+  // m_Motor1_PID.SetP(K_BH_LauncherPID_Gx[E_kP]);
+  // m_Motor1_PID.SetI(K_BH_LauncherPID_Gx[E_kI]);
+  // m_Motor1_PID.SetD(K_BH_LauncherPID_Gx[E_kD]);
+  // m_Motor1_PID.SetIZone(K_BH_LauncherPID_Gx[E_kIz]);
+  // m_Motor1_PID.SetFF(K_BH_LauncherPID_Gx[E_kFF]);
+  // m_Motor1_PID.SetOutputRange(K_BH_LauncherPID_Gx[E_kMinOutput], K_BH_LauncherPID_Gx[E_kMaxOutput]);
+  // m_Motor2_PID.SetP(K_BH_LauncherPID_Gx[E_kP]);
+  // m_Motor2_PID.SetI(K_BH_LauncherPID_Gx[E_kI]);
+  // m_Motor2_PID.SetD(K_BH_LauncherPID_Gx[E_kD]);
+  // m_Motor2_PID.SetIZone(K_BH_LauncherPID_Gx[E_kIz]);
+  // m_Motor2_PID.SetFF(K_BH_LauncherPID_Gx[E_kFF]);
+  // m_Motor2_PID.SetOutputRange(K_BH_LauncherPID_Gx[E_kMinOutput], K_BH_LauncherPID_Gx[E_kMaxOutput]);
 
-  m_Motor1_PID.SetP(K_BH_LauncherPID_Gx[E_kP]);
-  m_Motor1_PID.SetI(K_BH_LauncherPID_Gx[E_kI]);
-  m_Motor1_PID.SetD(K_BH_LauncherPID_Gx[E_kD]);
-  m_Motor1_PID.SetIZone(K_BH_LauncherPID_Gx[E_kIz]);
-  m_Motor1_PID.SetFF(K_BH_LauncherPID_Gx[E_kFF]);
-  m_Motor1_PID.SetOutputRange(K_BH_LauncherPID_Gx[E_kMinOutput], K_BH_LauncherPID_Gx[E_kMaxOutput]);
-  m_Motor2_PID.SetP(K_BH_LauncherPID_Gx[E_kP]);
-  m_Motor2_PID.SetI(K_BH_LauncherPID_Gx[E_kI]);
-  m_Motor2_PID.SetD(K_BH_LauncherPID_Gx[E_kD]);
-  m_Motor2_PID.SetIZone(K_BH_LauncherPID_Gx[E_kIz]);
-  m_Motor2_PID.SetFF(K_BH_LauncherPID_Gx[E_kFF]);
-  m_Motor2_PID.SetOutputRange(K_BH_LauncherPID_Gx[E_kMinOutput], K_BH_LauncherPID_Gx[E_kMaxOutput]);
-
-  frc::SmartDashboard::PutNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
-  frc::SmartDashboard::PutNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
-  frc::SmartDashboard::PutNumber("D Gain", K_BH_LauncherPID_Gx[E_kD]);
-  frc::SmartDashboard::PutNumber("I Zone", K_BH_LauncherPID_Gx[E_kIz]);
-  frc::SmartDashboard::PutNumber("Feed Forward", K_BH_LauncherPID_Gx[E_kFF]);
-  frc::SmartDashboard::PutNumber("Max Output", K_BH_LauncherPID_Gx[E_kMaxOutput]);
-  frc::SmartDashboard::PutNumber("Min Output", K_BH_LauncherPID_Gx[E_kMinOutput]);
+  // frc::SmartDashboard::PutNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
+  // frc::SmartDashboard::PutNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
+  // frc::SmartDashboard::PutNumber("D Gain", K_BH_LauncherPID_Gx[E_kD]);
+  // frc::SmartDashboard::PutNumber("I Zone", K_BH_LauncherPID_Gx[E_kIz]);
+  // frc::SmartDashboard::PutNumber("Feed Forward", K_BH_LauncherPID_Gx[E_kFF]);
+  // frc::SmartDashboard::PutNumber("Max Output", K_BH_LauncherPID_Gx[E_kMaxOutput]);
+  // frc::SmartDashboard::PutNumber("Min Output", K_BH_LauncherPID_Gx[E_kMinOutput]);
 
   // display secondary coefficients
-  frc::SmartDashboard::PutNumber("M1 Speed", 0);
-  frc::SmartDashboard::PutNumber("M2 Speed", 0);
+  // frc::SmartDashboard::PutNumber("M1 Speed", 0);
+  // frc::SmartDashboard::PutNumber("M2 Speed", 0);
   // frc::SmartDashboard::PutNumber("Kraken Speed", 0);
 
-  frc::SmartDashboard::PutNumber("M1 Speed Measured", 0);
-  frc::SmartDashboard::PutNumber("M2 Speed Measured", 0);
+  // frc::SmartDashboard::PutNumber("M1 Speed Measured", 0);
+  // frc::SmartDashboard::PutNumber("M2 Speed Measured", 0);
   // frc::SmartDashboard::PutNumber("Kraken speed Measuered", 0);
 
   frc::SmartDashboard::PutNumber("Ramp Rate", 6);
 
-  frc::SmartDashboard::PutNumber("M1 Desired", 0);
-  frc::SmartDashboard::PutNumber("M2 Desired", 0);
+  // frc::SmartDashboard::PutNumber("M1 Desired", 0);
+  // frc::SmartDashboard::PutNumber("M2 Desired", 0);
   // frc::SmartDashboard::PutNumber("Kraken Desiered", 0);
 }
 
@@ -189,13 +189,13 @@ void Robot::TeleopPeriodic()
   double L_DesiredSpeed2 = 0;
   double L_Krakenspeed1 = 0;
   
-  double L_p = frc::SmartDashboard::GetNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
-  double L_i = frc::SmartDashboard::GetNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
-  double L_d = frc::SmartDashboard::GetNumber("D Gain", K_BH_LauncherPID_Gx[E_kD]);
-  double L_iz = frc::SmartDashboard::GetNumber("I Zone", K_BH_LauncherPID_Gx[E_kIz]);
-  double L_ff = frc::SmartDashboard::GetNumber("Feed Forward", K_BH_LauncherPID_Gx[E_kFF]);
-  double L_max = frc::SmartDashboard::GetNumber("Max Output", K_BH_LauncherPID_Gx[E_kMaxOutput]);
-  double L_min = frc::SmartDashboard::GetNumber("Min Output", K_BH_LauncherPID_Gx[E_kMinOutput]);
+  // double L_p = frc::SmartDashboard::GetNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
+  // double L_i = frc::SmartDashboard::GetNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
+  // double L_d = frc::SmartDashboard::GetNumber("D Gain", K_BH_LauncherPID_Gx[E_kD]);
+  // double L_iz = frc::SmartDashboard::GetNumber("I Zone", K_BH_LauncherPID_Gx[E_kIz]);
+  // double L_ff = frc::SmartDashboard::GetNumber("Feed Forward", K_BH_LauncherPID_Gx[E_kFF]);
+  // double L_max = frc::SmartDashboard::GetNumber("Max Output", K_BH_LauncherPID_Gx[E_kMaxOutput]);
+  // double L_min = frc::SmartDashboard::GetNumber("Min Output", K_BH_LauncherPID_Gx[E_kMinOutput]);
   
   double L_Ramp = frc::SmartDashboard::GetNumber("Ramp Rate", 0);
 
@@ -203,8 +203,8 @@ void Robot::TeleopPeriodic()
   L_DesiredSpeed2 = frc::SmartDashboard::GetNumber("M2 Speed", 0);
 
 // Shuffleboard speed inputs along with ramp to time.
-  V_M1_Speed = RampTo(L_DesiredSpeed1, V_M1_Speed, L_Ramp);
-  V_M2_Speed = RampTo(L_DesiredSpeed2, V_M2_Speed, L_Ramp);
+  // V_M1_Speed = RampTo(L_DesiredSpeed1, V_M1_Speed, L_Ramp);
+  // V_M2_Speed = RampTo(L_DesiredSpeed2, V_M2_Speed, L_Ramp);
 
 /*Working Kraken controls*/
 //   m_krakentest.SetControl(controls::DutyCycleOut{0.2});
@@ -214,21 +214,21 @@ void Robot::TeleopPeriodic()
 // m_krakentest.SetControl(m_krakenRequest);
 /*Working motor controls ^*/
 
-  if((L_p != V_LauncherPID_Gx[E_kP]))   { m_Motor1_PID.SetP(L_p); m_Motor2_PID.SetP(L_p); V_LauncherPID_Gx[E_kP] = L_p; }
-  if((L_i != V_LauncherPID_Gx[E_kI]))   { m_Motor1_PID.SetI(L_i); m_Motor2_PID.SetI(L_i); V_LauncherPID_Gx[E_kI] = L_i; }
-  if((L_d != V_LauncherPID_Gx[E_kD]))   { m_Motor1_PID.SetD(L_d); m_Motor2_PID.SetD(L_d); V_LauncherPID_Gx[E_kD] = L_d; }
-  if((L_iz != V_LauncherPID_Gx[E_kIz])) { m_Motor1_PID.SetIZone(L_iz); m_Motor2_PID.SetIZone(L_iz); V_LauncherPID_Gx[E_kIz] = L_iz; }
-  if((L_ff != V_LauncherPID_Gx[E_kFF])) { m_Motor1_PID.SetFF(L_ff); m_Motor2_PID.SetFF(L_ff); V_LauncherPID_Gx[E_kFF] = L_ff; }
-  if((L_max != V_LauncherPID_Gx[E_kMaxOutput]) || (L_min != K_BH_LauncherPID_Gx[E_kMinOutput])) { m_Motor1_PID.SetOutputRange(L_min, L_max); m_Motor2_PID.SetOutputRange(L_min, L_max); V_LauncherPID_Gx[E_kMinOutput] = L_min; V_LauncherPID_Gx[E_kMaxOutput] = L_max; }
+  // if((L_p != V_LauncherPID_Gx[E_kP]))   { m_Motor1_PID.SetP(L_p); m_Motor2_PID.SetP(L_p); V_LauncherPID_Gx[E_kP] = L_p; }
+  // if((L_i != V_LauncherPID_Gx[E_kI]))   { m_Motor1_PID.SetI(L_i); m_Motor2_PID.SetI(L_i); V_LauncherPID_Gx[E_kI] = L_i; }
+  // if((L_d != V_LauncherPID_Gx[E_kD]))   { m_Motor1_PID.SetD(L_d); m_Motor2_PID.SetD(L_d); V_LauncherPID_Gx[E_kD] = L_d; }
+  // if((L_iz != V_LauncherPID_Gx[E_kIz])) { m_Motor1_PID.SetIZone(L_iz); m_Motor2_PID.SetIZone(L_iz); V_LauncherPID_Gx[E_kIz] = L_iz; }
+  // if((L_ff != V_LauncherPID_Gx[E_kFF])) { m_Motor1_PID.SetFF(L_ff); m_Motor2_PID.SetFF(L_ff); V_LauncherPID_Gx[E_kFF] = L_ff; }
+  // if((L_max != V_LauncherPID_Gx[E_kMaxOutput]) || (L_min != K_BH_LauncherPID_Gx[E_kMinOutput])) { m_Motor1_PID.SetOutputRange(L_min, L_max); m_Motor2_PID.SetOutputRange(L_min, L_max); V_LauncherPID_Gx[E_kMinOutput] = L_min; V_LauncherPID_Gx[E_kMaxOutput] = L_max; }
 
-  m_Motor1_PID.SetReference(V_M1_Speed, rev::CANSparkMax::ControlType::kVelocity);
-  m_Motor2_PID.SetReference(V_M2_Speed, rev::CANSparkMax::ControlType::kVelocity);
+  // m_Motor1_PID.SetReference(V_M1_Speed, rev::CANSparkMax::ControlType::kVelocity);
+  // m_Motor2_PID.SetReference(V_M2_Speed, rev::CANSparkMax::ControlType::kVelocity);
 
-  frc::SmartDashboard::PutNumber("M1 Speed Measured", m_Motor1Encoder.GetVelocity());
-  frc::SmartDashboard::PutNumber("M2 Speed Measured", m_Motor2Encoder.GetVelocity()); 
+  // frc::SmartDashboard::PutNumber("M1 Speed Measured", m_Motor1Encoder.GetVelocity());
+  // frc::SmartDashboard::PutNumber("M2 Speed Measured", m_Motor2Encoder.GetVelocity()); 
 
-  frc::SmartDashboard::PutNumber("M1 Desired", V_M1_Speed);
-  frc::SmartDashboard::PutNumber("M2 Desired", V_M2_Speed);
+  // frc::SmartDashboard::PutNumber("M1 Desired", V_M1_Speed);
+  // frc::SmartDashboard::PutNumber("M2 Desired", V_M2_Speed);
   frc::SmartDashboard::PutNumber("Kraken Desired", V_KrakenTest_Speed);
 }
 
@@ -240,29 +240,29 @@ void Robot::TeleopPeriodic()
 void Robot::TestPeriodic()
 {
 
-  double L_p = frc::SmartDashboard::GetNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
-  double L_i = frc::SmartDashboard::GetNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
-  double L_d = frc::SmartDashboard::GetNumber("D Gain", K_BH_LauncherPID_Gx[E_kD]);
-  double L_iz = frc::SmartDashboard::GetNumber("I Zone", K_BH_LauncherPID_Gx[E_kIz]);
-  double L_ff = frc::SmartDashboard::GetNumber("Feed Forward", K_BH_LauncherPID_Gx[E_kFF]);
-  double L_max = frc::SmartDashboard::GetNumber("Max Output", K_BH_LauncherPID_Gx[E_kMaxOutput]);
-  double L_min = frc::SmartDashboard::GetNumber("Min Output", K_BH_LauncherPID_Gx[E_kMinOutput]);
+  // double L_p = frc::SmartDashboard::GetNumber("P Gain", K_BH_LauncherPID_Gx[E_kP]);
+  // double L_i = frc::SmartDashboard::GetNumber("I Gain", K_BH_LauncherPID_Gx[E_kI]);
+  // double L_d = frc::SmartDashboard::GetNumber("D Gain", K_BH_LauncherPID_Gx[E_kD]);
+  // double L_iz = frc::SmartDashboard::GetNumber("I Zone", K_BH_LauncherPID_Gx[E_kIz]);
+  // double L_ff = frc::SmartDashboard::GetNumber("Feed Forward", K_BH_LauncherPID_Gx[E_kFF]);
+  // double L_max = frc::SmartDashboard::GetNumber("Max Output", K_BH_LauncherPID_Gx[E_kMaxOutput]);
+  // double L_min = frc::SmartDashboard::GetNumber("Min Output", K_BH_LauncherPID_Gx[E_kMinOutput]);
 
-  V_M1_Speed = frc::SmartDashboard::GetNumber("M1 Speed", 0);
-  V_M2_Speed = frc::SmartDashboard::GetNumber("M2 Speed", 0);
+  // V_M1_Speed = frc::SmartDashboard::GetNumber("M1 Speed", 0);
+  // V_M2_Speed = frc::SmartDashboard::GetNumber("M2 Speed", 0);
 
-  if((L_p != V_LauncherPID_Gx[E_kP]))   { m_Motor1_PID.SetP(L_p); m_Motor1_PID.SetP(L_p); V_LauncherPID_Gx[E_kP] = L_p; }
-  if((L_i != V_LauncherPID_Gx[E_kI]))   { m_Motor1_PID.SetI(L_i); m_Motor1_PID.SetI(L_i); V_LauncherPID_Gx[E_kI] = L_i; }
-  if((L_d != V_LauncherPID_Gx[E_kD]))   { m_Motor1_PID.SetD(L_d); m_Motor1_PID.SetD(L_d); V_LauncherPID_Gx[E_kD] = L_d; }
-  if((L_iz != V_LauncherPID_Gx[E_kIz])) { m_Motor1_PID.SetIZone(L_iz); m_Motor1_PID.SetIZone(L_iz); V_LauncherPID_Gx[E_kIz] = L_iz; }
-  if((L_ff != V_LauncherPID_Gx[E_kFF])) { m_Motor1_PID.SetFF(L_ff); m_Motor1_PID.SetFF(L_ff); V_LauncherPID_Gx[E_kFF] = L_ff; }
-  if((L_max != V_LauncherPID_Gx[E_kMaxOutput]) || (L_min != K_BH_LauncherPID_Gx[E_kMinOutput])) { m_Motor1_PID.SetOutputRange(L_min, L_max); m_Motor1_PID.SetOutputRange(L_min, L_max); V_LauncherPID_Gx[E_kMinOutput] = L_min; V_LauncherPID_Gx[E_kMaxOutput] = L_max; }
+  // if((L_p != V_LauncherPID_Gx[E_kP]))   { m_Motor1_PID.SetP(L_p); m_Motor1_PID.SetP(L_p); V_LauncherPID_Gx[E_kP] = L_p; }
+  // if((L_i != V_LauncherPID_Gx[E_kI]))   { m_Motor1_PID.SetI(L_i); m_Motor1_PID.SetI(L_i); V_LauncherPID_Gx[E_kI] = L_i; }
+  // if((L_d != V_LauncherPID_Gx[E_kD]))   { m_Motor1_PID.SetD(L_d); m_Motor1_PID.SetD(L_d); V_LauncherPID_Gx[E_kD] = L_d; }
+  // if((L_iz != V_LauncherPID_Gx[E_kIz])) { m_Motor1_PID.SetIZone(L_iz); m_Motor1_PID.SetIZone(L_iz); V_LauncherPID_Gx[E_kIz] = L_iz; }
+  // if((L_ff != V_LauncherPID_Gx[E_kFF])) { m_Motor1_PID.SetFF(L_ff); m_Motor1_PID.SetFF(L_ff); V_LauncherPID_Gx[E_kFF] = L_ff; }
+  // if((L_max != V_LauncherPID_Gx[E_kMaxOutput]) || (L_min != K_BH_LauncherPID_Gx[E_kMinOutput])) { m_Motor1_PID.SetOutputRange(L_min, L_max); m_Motor1_PID.SetOutputRange(L_min, L_max); V_LauncherPID_Gx[E_kMinOutput] = L_min; V_LauncherPID_Gx[E_kMaxOutput] = L_max; }
 
-  m_Motor1_PID.SetReference(V_M1_Speed, rev::CANSparkMax::ControlType::kVelocity);
-  m_Motor2_PID.SetReference(V_M2_Speed, rev::CANSparkMax::ControlType::kVelocity);
+  // m_Motor1_PID.SetReference(V_M1_Speed, rev::CANSparkMax::ControlType::kVelocity);
+  // m_Motor2_PID.SetReference(V_M2_Speed, rev::CANSparkMax::ControlType::kVelocity);
 
-  frc::SmartDashboard::PutNumber("M1 Speed", m_Motor1Encoder.GetVelocity());
-  frc::SmartDashboard::PutNumber("M2 Speed", m_Motor2Encoder.GetVelocity()); 
+  // frc::SmartDashboard::PutNumber("M1 Speed", m_Motor1Encoder.GetVelocity());
+  // frc::SmartDashboard::PutNumber("M2 Speed", m_Motor2Encoder.GetVelocity()); 
   // frc::SmartDashboard::PutNumber("Kraken Speed". m_)
 }
 

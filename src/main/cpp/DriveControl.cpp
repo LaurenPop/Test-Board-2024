@@ -40,7 +40,7 @@ double KV_SD_WheelSpeedPID_V2_Gx[E_PID_SparkMaxCalSz];
 double KV_SD_WheelSpeedRampRate = 0;
 double KV_SD_WheelGx[E_RobotCornerSz];
 
-
+#ifdef Swerve 
 /******************************************************************************
  * Function:     SwerveDriveMotorConfigsInit
  *
@@ -609,3 +609,4 @@ void DriveControlMain(double               L_JoyStick1Axis1Y,  // swerve control
   frc::SmartDashboard::PutNumber("Offset[E_RearLeft]",   La_n_SD_Offset[E_RearLeft]);
   frc::SmartDashboard::PutNumber("Offset[E_RearRight]",  La_n_SD_Offset[E_RearRight]);
   }
+#endif

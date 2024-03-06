@@ -85,7 +85,7 @@ void ADAS_Main_Init(void)
   frc::SmartDashboard::PutBoolean("movetotag", toggle);
 
 }
-
+#ifdef Extra_ADAS
 /******************************************************************************
  * Function:     ADAS_DetermineMode
  *
@@ -479,3 +479,4 @@ if (toggle){
 
   return (LeADAS_e_ActiveFeature);
 }
+#endif

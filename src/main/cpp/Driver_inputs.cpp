@@ -12,7 +12,7 @@
 #include <math.h>
 
 RobotUserInput VsCONT_s_DriverInput;
-
+#ifdef Driver_inputs
 /******************************************************************************
  * Function:     Joystick1_robot_mapping
  *
@@ -141,3 +141,4 @@ void Joystick2_robot_mapping(bool    LeCONT_b_Driver2ButtonA,
     VsCONT_s_DriverInput.Pct_LinearSlideTest = -1.0;
     }
   }
+  #endif

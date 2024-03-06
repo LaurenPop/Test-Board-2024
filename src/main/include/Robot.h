@@ -8,15 +8,15 @@
 #include <ctre/Phoenix.h>
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 #include <ctre/phoenix6/TalonFX.hpp>
-#include <ctre/phoenix6/signals/SpnEnums.hpp>
+// #include <ctre/phoenix6/signals/SpnEnums.hpp>
 #include <ctre/phoenix6/CANcoder.hpp>
-#include <ctre/phoenix6/Serializable.hpp>
-#include <ctre/phoenix6/controls/DutyCycleOut.hpp>
-#include <ctre/phoenix6/controls/PositionDutyCycle.hpp>
-#include <ctre/phoenix6/controls/VelocityVoltage.hpp>
-#include <ctre/phoenix6/core/CoreCANcoder.hpp>
-#include <ctre/phoenix6/core/CoreTalonFX.hpp>
-#include <ctre/phoenix6/controls/MotionMagicVelocityVoltage.hpp>
+// #include <ctre/phoenix6/Serializable.hpp>
+// #include <ctre/phoenix6/controls/DutyCycleOut.hpp>
+// #include <ctre/phoenix6/controls/PositionDutyCycle.hpp>
+// #include <ctre/phoenix6/controls/VelocityVoltage.hpp>
+// #include <ctre/phoenix6/core/CoreCANcoder.hpp>
+// #include <ctre/phoenix6/core/CoreTalonFX.hpp>
+// #include <ctre/phoenix6/controls/MotionMagicVelocityVoltage.hpp>
 
 #include <frc/trajectory/TrapezoidProfile.h>
 #include <frc/DigitalInput.h>
@@ -69,19 +69,21 @@ class Robot : public frc::TimedRobot {
   frc::PowerDistribution                     PDP                   {C_PDP_ID,               frc::PowerDistribution::ModuleType::kRev};
 
   // CAN Motor Controllers
-  rev::CANSparkMax                           m_Motor1 {1,  rev::CANSparkMax::MotorType::kBrushless};
-  rev::CANSparkMax                           m_Motor2 {2,  rev::CANSparkMax::MotorType::kBrushless};
+  // rev::CANSparkMax                           m_Motor1 {1,  rev::CANSparkMax::MotorType::kBrushless};
+  // rev::CANSparkMax                           m_Motor2 {2,  rev::CANSparkMax::MotorType::kBrushless};
+#ifdef KrakenMotor
   ctre::phoenix6::hardware::TalonFX          m_krakentest{0, kCANBus};
-
-  rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
-  rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();
-  // ctre::phoenix6::hardware::TalonFX          m_krakentestPID   =m_krakentest.Get();
-  
+#endif
+  // rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
+  // rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();
+  #ifdef KrakenMotor
+  ctre::phoenix6::hardware::TalonFX          m_krakentestPID   =m_krakentest.Get();
+  #endif
  // CAN Encoders
-  rev::SparkRelativeEncoder               m_Motor1Encoder  = m_Motor1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
-  rev::SparkRelativeEncoder               m_Motor2Encoder  = m_Motor2.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  // rev::SparkRelativeEncoder               m_Motor1Encoder  = m_Motor1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  // rev::SparkRelativeEncoder               m_Motor2Encoder  = m_Motor2.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
 
-
+#ifdef KrakenMotor
 // now types are organized cleanly by namespace
 hardware::TalonFX m_talonFX{0};
 sim::TalonFXSimState& m_talonFXSim{m_talonFX.GetSimState()};
@@ -90,7 +92,7 @@ controls::DutyCycleOut m_talonFXOut{0};
 
 configs::TalonFXConfiguration m_talonFXConfig{};
 ctre::phoenix6::signals::InvertedValue m_talonFXInverted{ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive};
-
+#endif
 
   // Driver Input
   frc::Joystick c_joyStick{0};
@@ -103,7 +105,9 @@ ctre::phoenix6::signals::InvertedValue m_talonFXInverted{ctre::phoenix6::signals
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
+  #ifdef KrakenMotor
   ctre::phoenix6::hardware::CANcoder cancoder{1, "rio"};
   units::time::second_t currentTime{frc::Timer::GetFPGATimestamp()};
+  #endif
 };
 #endif
