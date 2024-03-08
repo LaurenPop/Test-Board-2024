@@ -11,7 +11,7 @@
 #define NewVision // NewVision or OldVision
 
 // Kraken Motor testing
-// #define KrakenMotor
+#define KrakenMotor
 
 // Driver inputs file
 // #define Driver_inputs

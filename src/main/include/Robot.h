@@ -77,7 +77,7 @@ class Robot : public frc::TimedRobot {
   // rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
   // rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();
   #ifdef KrakenMotor
-  ctre::phoenix6::hardware::TalonFX          m_krakentestPID   =m_krakentest.Get();
+  ctre::phoenix6::hardware::TalonFX          m_krakentestPID   = m_krakentest.Get();
   #endif
  // CAN Encoders
   // rev::SparkRelativeEncoder               m_Motor1Encoder  = m_Motor1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
@@ -105,6 +105,7 @@ ctre::phoenix6::signals::InvertedValue m_talonFXInverted{ctre::phoenix6::signals
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
+  
   #ifdef KrakenMotor
   ctre::phoenix6::hardware::CANcoder cancoder{1, "rio"};
   units::time::second_t currentTime{frc::Timer::GetFPGATimestamp()};

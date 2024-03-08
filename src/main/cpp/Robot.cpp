@@ -62,40 +62,6 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
-#ifdef KrakenMotor
-configs::Slot0Configs slot0Configs{};
-slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
-slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-slot0Configs.kP = 0.11; // An error of 1 rps results in 0.11 V output
-slot0Configs.kI = 0; // no output for integrated error
-slot0Configs.kD = 0; // no output for error derivative
-
-m_talonFX.GetConfigurator().Apply(slot0Configs);
-
-// create a velocity closed-loop request, voltage output, slot 0 configs
-controls::VelocityVoltage m_request = controls::VelocityVoltage{0_tps}.WithSlot(0);
-
-// set velocity to 8 rps, add 0.5 V to overcome gravity
-m_talonFX.SetControl(m_request.WithVelocity(8_tps).WithFeedForward(0.5_V));
-
-// Trapezoid profile with max acceleration 400 rot/s^2, max jerk 4000 rot/s^3
-frc::TrapezoidProfile<units::turns_per_second_t> m_profile{{400_tr_per_s_sq, 4000_tr_per_s_cu}};
-// Final target of 80 rps, 0 rot/s^2
-frc::TrapezoidProfile<units::turns_per_second_t>::State m_goal{80_tps, 0_tr_per_s_sq};
-frc::TrapezoidProfile<units::turns_per_second_t>::State m_setpoint{};
-
-// create a velocity closed-loop request, voltage output, slot 0 configs
-controls::VelocityVoltage m_request = controls::VelocityVoltage{0_tps}.WithSlot(0);
-
-// calculate the next profile setpoint
-m_setpoint = m_profile.Calculate(20_ms, m_setpoint, m_goal);
-
-// send the request to the device
-// note: "position" is velocity, and "velocity" is acceleration
-// m_positionControl.Velocity = m_setpoint.position;
-// m_positionControl.Acceleration = m_setpoint.velocity;
-m_talonFX.SetControl(m_request);
-#endif
   // m_Motor1_PID.SetP(K_BH_LauncherPID_Gx[E_kP]);
   // m_Motor1_PID.SetI(K_BH_LauncherPID_Gx[E_kI]);
   // m_Motor1_PID.SetD(K_BH_LauncherPID_Gx[E_kD]);
@@ -205,13 +171,47 @@ void Robot::TeleopPeriodic()
 // Shuffleboard speed inputs along with ramp to time.
   // V_M1_Speed = RampTo(L_DesiredSpeed1, V_M1_Speed, L_Ramp);
   // V_M2_Speed = RampTo(L_DesiredSpeed2, V_M2_Speed, L_Ramp);
+#ifdef KrakenMotor
+configs::Slot0Configs slot0Configs{};
+slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
+slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+slot0Configs.kP = 0.11; // An error of 1 rps results in 0.11 V output
+slot0Configs.kI = 0; // no output for integrated error
+slot0Configs.kD = 0; // no output for error derivative
+
+m_talonFX.GetConfigurator().Apply(slot0Configs);
+
+// create a velocity closed-loop request, voltage output, slot 0 configs
+controls::VelocityVoltage m_request = controls::VelocityVoltage{0_tps}.WithSlot(0);
+
+// set velocity to 8 rps, add 0.5 V to overcome gravity
+m_talonFX.SetControl(m_request.WithVelocity(8_tps).WithFeedForward(0.5_V));
+
+// Trapezoid profile with max acceleration 400 rot/s^2, max jerk 4000 rot/s^3
+frc::TrapezoidProfile<units::turns_per_second_t> m_profile{{400_tr_per_s_sq, 4000_tr_per_s_cu}};
+// Final target of 80 rps, 0 rot/s^2
+frc::TrapezoidProfile<units::turns_per_second_t>::State m_goal{80_tps, 0_tr_per_s_sq};
+frc::TrapezoidProfile<units::turns_per_second_t>::State m_setpoint{};
+
+// create a velocity closed-loop request, voltage output, slot 0 configs
+controls::VelocityVoltage m_request = controls::VelocityVoltage{0_tps}.WithSlot(0);
+
+// calculate the next profile setpoint
+m_setpoint = m_profile.Calculate(20_ms, m_setpoint, m_goal);
+
+// send the request to the device
+// note: "position" is velocity, and "velocity" is acceleration
+m_positionControl.Velocity = m_setpoint.position;
+m_positionControl.Acceleration = m_setpoint.velocity;
+m_talonFX.SetControl(m_request);
+#endif
 
 /*Working Kraken controls*/
-//   m_krakentest.SetControl(controls::DutyCycleOut{0.2});
-//   controls::DutyCycleOut m_krakenRequest(0.2);
+  m_krakentest.SetControl(controls::DutyCycleOut{0.2});
+  controls::DutyCycleOut m_krakenRequest(0.2);
 
-// m_krakenRequest.Output = 0.2;
-// m_krakentest.SetControl(m_krakenRequest);
+m_krakenRequest.Output = 0.2;
+m_krakentest.SetControl(m_krakenRequest);
 /*Working motor controls ^*/
 
   // if((L_p != V_LauncherPID_Gx[E_kP]))   { m_Motor1_PID.SetP(L_p); m_Motor2_PID.SetP(L_p); V_LauncherPID_Gx[E_kP] = L_p; }
@@ -263,7 +263,6 @@ void Robot::TestPeriodic()
 
   // frc::SmartDashboard::PutNumber("M1 Speed", m_Motor1Encoder.GetVelocity());
   // frc::SmartDashboard::PutNumber("M2 Speed", m_Motor2Encoder.GetVelocity()); 
-  // frc::SmartDashboard::PutNumber("Kraken Speed". m_)
 }
 
 #ifndef RUNNING_FRC_TESTS
