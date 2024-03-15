@@ -41,6 +41,8 @@
 
 #include "Const.hpp"
 
+using namespace ctre::phoenix::motorcontrol;
+using namespace ctre::phoenix::sensors;
 using namespace ctre::phoenix6;
 
 class Robot : public frc::TimedRobot {
@@ -53,7 +55,7 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
   void RobotMotorCommands();
-  static constexpr char const *kCANBus{"rio"};
+  static constexpr char const *kCANBus{"canivore"};
   //DIO - Inputs / Outputs
   #ifdef CompBot
   // WPI_CANCoder          m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
