@@ -55,7 +55,7 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
   void RobotMotorCommands();
-  static constexpr char const *kCANBus{"canivore"};
+  static constexpr char const *kCANBus{"rio"};
   //DIO - Inputs / Outputs
   #ifdef CompBot
   // WPI_CANCoder          m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
@@ -79,7 +79,10 @@ class Robot : public frc::TimedRobot {
   // rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
   // rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();
   #ifdef KrakenMotor
-  ctre::phoenix6::hardware::TalonFX          m_krakentestPID   = m_krakentest.Get();
+  // ctre::phoenix6::hardware::TalonFX          m_krakentestPID   = m_krakentest.GetAppliedControl();
+  ctre::phoenix6::controls::VelocityVoltage m_voltageVelocity{0_tps, 0_tr_per_s_sq, true, 0_V, 0, false};
+  ctre::phoenix6::controls::VelocityTorqueCurrentFOC m_torqueVelocity{0_tps, 0_tr_per_s_sq, 0_A, 1, false};
+  ctre::phoenix6::controls::StaticBrake m_brake{};
   #endif
  // CAN Encoders
   // rev::SparkRelativeEncoder               m_Motor1Encoder  = m_Motor1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);

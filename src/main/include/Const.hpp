@@ -4,11 +4,11 @@
 #include <units/length.h>
 
 // Define the desired test state here: COMP (no test), BallHandlerTest, Manipulator_Test, DriveMotorTest, WheelAngleTest, ADAS_UT_Test, ADAS_BT_Test
-#define Manipulator_Test
+// #define Manipulator_Test
 // Define the bot type: CompBot, PracticeBot
 #define CompBot
 
-#define NewVision // NewVision or OldVision
+// #define NewVision // NewVision or OldVision
 
 // Kraken Motor testing
 #define KrakenMotor
