@@ -8,17 +8,23 @@
 #include <ctre/Phoenix.h>
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 #include <ctre/phoenix6/TalonFX.hpp>
-// #include <ctre/phoenix6/signals/SpnEnums.hpp>
+#include <ctre/phoenix6/signals/SpnEnums.hpp>
 #include <ctre/phoenix6/CANcoder.hpp>
-// #include <ctre/phoenix6/Serializable.hpp>
-// #include <ctre/phoenix6/controls/DutyCycleOut.hpp>
-// #include <ctre/phoenix6/controls/PositionDutyCycle.hpp>
-// #include <ctre/phoenix6/controls/VelocityVoltage.hpp>
-// #include <ctre/phoenix6/core/CoreCANcoder.hpp>
-// #include <ctre/phoenix6/core/CoreTalonFX.hpp>
-// #include <ctre/phoenix6/controls/MotionMagicVelocityVoltage.hpp>
+#include <ctre/phoenix6/Serializable.hpp>
+#include <ctre/phoenix6/controls/DutyCycleOut.hpp>
+#include <ctre/phoenix6/controls/PositionDutyCycle.hpp>
+#include <ctre/phoenix6/controls/VelocityVoltage.hpp>
+#include <ctre/phoenix6/core/CoreCANcoder.hpp>
+#include <ctre/phoenix6/core/CoreTalonFX.hpp>
+#include <ctre/phoenix6/controls/MotionMagicVelocityVoltage.hpp>
+#include <ctre/phoenix6/controls/PositionVoltage.hpp>
+#include <ctre/phoenix6/controls/PositionDutyCycle.hpp>
+#include <ctre/phoenix6/controls/VelocityDutyCycle.hpp>
+
 
 #include <frc/trajectory/TrapezoidProfile.h>
+#include <units/velocity.h>
+#include <units/voltage.h>
 #include <frc/DigitalInput.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/DigitalOutput.h>
@@ -74,7 +80,7 @@ class Robot : public frc::TimedRobot {
   // rev::CANSparkMax                           m_Motor1 {1,  rev::CANSparkMax::MotorType::kBrushless};
   // rev::CANSparkMax                           m_Motor2 {2,  rev::CANSparkMax::MotorType::kBrushless};
 #ifdef KrakenMotor
-  ctre::phoenix6::hardware::TalonFX          m_krakentest{0, kCANBus};
+  ctre::phoenix6::hardware::TalonFX          m_talonfx{0, kCANBus};
 #endif
   // rev::SparkMaxPIDController                 m_Motor1_PID   = m_Motor1.GetPIDController();
   // rev::SparkMaxPIDController                 m_Motor2_PID   = m_Motor2.GetPIDController();

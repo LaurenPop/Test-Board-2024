@@ -1,10 +1,9 @@
 /*
  * Team 5561 2022 Code
  *
- * This code runs the 2020 robot which is capable of the following:
- * - Swerve Drive (beta 02/10/2020)
- * - Shooting balls without vision (beta 02/26/2022)
- * - Climber active (beta 02/26/2022)
+ * This code runs the 2024 Test board which is capable of the following:
+ * 
+ * Kind works ith kraken motors (almost there) 3/16/24
  *
  * */
 #include "Robot.h"
@@ -25,7 +24,7 @@
 //#include "ADAS_BT.hpp"
 //#include "ADAS_DM.hpp"
 //#include "ADAS_MN.hpp"
-//#include <ctime>
+#include <ctime>
 /*
 T_RobotState VeROBO_e_RobotState = E_Init;
 frc::DriverStation::Alliance VeROBO_e_AllianceColor = frc::DriverStation::Alliance::kBlue;
@@ -183,11 +182,44 @@ void Robot::TeleopPeriodic()
   double L_DesiredSpeed1 = 0;
   double L_DesiredSpeed2 = 0;
   double L_Krakenspeed1 = 0;
-  
-    m_krakentest.SetControl(m_voltageVelocity.WithVelocity(desiredRotationsPerSecond));
 
-    // m_fx.SetControl(m_torqueVelocity.WithVelocity(desiredRotationsPerSecond).WithFeedForward(friction_torque));
-  
+// Trapezoid profile with max acceleration 400 rot/s^2, max jerk 4000 rot/s^3
+frc::TrapezoidProfile<units::turns_per_second_t> m_profile{{400_tr_per_s_sq, 4000_tr_per_s_cu}};
+// Final target of 80 rps, 0 rot/s^2
+frc::TrapezoidProfile<units::turns_per_second_t>::State m_goal{80_tps, 0_tr_per_s_sq};
+frc::TrapezoidProfile<units::turns_per_second_t>::State m_setpoint{};
+
+// create a velocity closed-loop request, voltage output, slot 0 configs
+controls::VelocityVoltage m_request = controls::VelocityVoltage{0_tps}.WithSlot(0);
+
+// calculate the next profile setpoint
+m_setpoint = m_profile.Calculate(20_ms, m_setpoint, m_goal);
+
+// send the request to the device
+// note: "position" is velocity, and "velocity" is acceleration
+#ifdef Krakenthings
+m_positionControl.Velocity = m_setpoint.position;
+m_positionControl.Acceleration = m_setpoint.velocity;
+#endif
+m_talonFX.SetControl(m_request);
+
+
+
+
+
+
+
+
+
+
+#ifdef krakenthing
+// create a velocity closed-loop request, voltage output, slot 0 configs
+controls::VelocityVoltage m_request = controls::VelocityVoltage{0_tps}.WithSlot(0);
+
+// // set velocity to 8 rps, add 0.5 V to overcome gravity
+m_talonFX.SetControl(m_request.WithVelocity(8_tps).WithFeedForward(0.5_V));
+#endif
+
     /* Disable the motor instead */
     // m_krakentest.SetControl(m_brake);  
 
@@ -197,11 +229,11 @@ void Robot::TeleopPeriodic()
   L_DesiredSpeed1 = frc::SmartDashboard::GetNumber("M1 Speed", 0);
   L_DesiredSpeed2 = frc::SmartDashboard::GetNumber("M2 Speed", 0);
 
-m_krakentest.SetControl(controls::DutyCycleOut{0.1});
-controls::DutyCycleOut m_krakenRequest(0.1);
+// m_krakentest.SetControl(controls::DutyCycleOut{0.2});
+// controls::DutyCycleOut m_krakenRequest(0.2);
 
-m_krakenRequest.Output = 0.1;
-m_krakentest.SetControl(m_krakenRequest);
+// m_krakenRequest.Output = 0.2;
+// m_krakentest.SetControl(m_krakenRequest);
 
 // Shuffleboard speed inputs along with ramp to time.
   // V_M1_Speed = RampTo(L_DesiredSpeed1, V_M1_Speed, L_Ramp);
