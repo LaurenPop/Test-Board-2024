@@ -103,6 +103,8 @@ controls::DutyCycleOut m_talonFXOut{0};
 
 configs::TalonFXConfiguration m_talonFXConfig{};
 ctre::phoenix6::signals::InvertedValue m_talonFXInverted{ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive};
+
+
 #endif
 
   // Driver Input
